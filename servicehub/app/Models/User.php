@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\UserProfile;
 
 class User extends Authenticatable
 {
@@ -52,6 +53,16 @@ class User extends Authenticatable
     public function profile(): HasOne
     {
         return $this->hasOne(UserProfile::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::created(function (User $user) {
+            $user->profile()->create([
+                'phone'    => null,
+                'position' => null,
+            ]);
+        });
     }
 
 }
