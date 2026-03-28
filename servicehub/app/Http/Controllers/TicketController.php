@@ -10,7 +10,7 @@ use App\Http\Requests\UpdateTicketRequest;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
-
+use App\Jobs\ProcessTicketAttachment;
 class TicketController extends Controller
 {
     public function index(): Response
@@ -46,6 +46,10 @@ class TicketController extends Controller
             'ticket_id'         => $ticket->id,
             'responsible_email' => auth()->user()->email,
         ]);
+
+        if ($ticket->attachment_path) {
+            ProcessTicketAttachment::dispatch($ticket);
+        }
 
         return redirect()->route('tickets.index');
     }
