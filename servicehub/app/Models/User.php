@@ -13,6 +13,7 @@ use App\Models\UserProfile;
 
 class User extends Authenticatable
 {
+
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
